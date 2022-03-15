@@ -1,4 +1,5 @@
 using Assignment2_group20.Data;
+using Assignment2_group20.Hubs;
 using Assignment2_group20.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,12 +12,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//Add signalR
+builder.Services.AddSignalR();
+
 builder.Services.AddDbContext<DataDb>(opt => opt.UseInMemoryDatabase("TempDb"));
 
 var app = builder.Build();
 
 
-
+//Seeding db
 using (var serviceScope = ((IApplicationBuilder)app).ApplicationServices.CreateScope())
 {
     var context = serviceScope.ServiceProvider.GetService<DataDb>();
@@ -83,8 +87,6 @@ testExpense1
         context.SaveChanges();
     }
 }
-//var context = app.Services.GetService<DataDb>();
-
 
 
 // Configure the HTTP request pipeline.
@@ -97,7 +99,7 @@ app.UseStaticFiles();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
+app.MapHub<ExpenseLogHub>("/logExpenseHub");
 app.MapControllers();
 
 app.Run();

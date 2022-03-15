@@ -1,20 +1,22 @@
 ﻿"use strict";
 
-var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+var connection = new signalR.HubConnectionBuilder().withUrl("/logExpenseHub").build();
 
 //Disable send button until connection is established
-document.getElementById("sendButton").disabled = true;
+//document.getElementById("sendButton").disabled = true;
 
-connection.on("ReceiveMessage", function (user, message) {
-    var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    var encodedMsg = user + " says " + msg;
-    var li = document.createElement("li");
-    li.textContent = encodedMsg;
+connection.on("ReceiveMessage", function (expense) {
+
+    var txt = expense.toJSON();
+    //var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    //var encodedMsg = user + " says " + msg;
+    //var li = document.createElement("li");
+    li.textContent = txt;
     document.getElementById("messagesList").appendChild(li);
 });
 
 connection.start().then(function () {
-    document.getElementById("sendButton").disabled = false;
+    //document.getElementById("sendButton").disabled = false;
 }).catch(function (err) {
     return console.error(err.toString());
 });

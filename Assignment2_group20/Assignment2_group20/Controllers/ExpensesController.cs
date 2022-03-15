@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Assignment2_group20.Data;
+using Assignment2_group20.Hubs;
 using Assignment2_group20.Models;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Assignment2_group20.Controllers
 {
@@ -16,9 +18,11 @@ namespace Assignment2_group20.Controllers
     public class ExpensesController : ControllerBase
     {
         private readonly DataDb _context;
+        private readonly IHubContext<ExpenseLogHub> _hubContext;
 
-        public ExpensesController(DataDb context)
+        public ExpensesController(DataDb context, IHubContext<ExpenseLogHub> hubContext)
         {
+            _hubContext=hubContext;
             _context = context;
         }
 
@@ -79,8 +83,12 @@ namespace Assignment2_group20.Controllers
         [HttpPost]
         public async Task<ActionResult<Expense>> PostExpense(Expense expense)
         {
+
+
             _context.Expenses.Add(expense);
             await _context.SaveChangesAsync();
+            //_hubContext.Clients.All.SendCoreAsync("LogExpense", expense);
+            //_hubContext.Clients.All
 
             return CreatedAtAction("GetExpense", new { id = expense.ExpenseId }, expense);
         }
