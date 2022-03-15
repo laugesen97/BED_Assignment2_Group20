@@ -7,7 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddCors();
 builder.Services.AddControllers();
+
+builder.Services.AddDbContext<DataDb>(opt => opt.UseInMemoryDatabase("TempDb"));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -15,7 +18,6 @@ builder.Services.AddSwaggerGen();
 //Add signalR
 builder.Services.AddSignalR();
 
-builder.Services.AddDbContext<DataDb>(opt => opt.UseInMemoryDatabase("TempDb"));
 
 var app = builder.Build();
 
@@ -30,7 +32,6 @@ using (var serviceScope = ((IApplicationBuilder)app).ApplicationServices.CreateS
     AddTestData(context);
     static void AddTestData(DataDb context)
     {
-
         var testExpense1 = new Expense()
         {
             amount = 123,
@@ -42,8 +43,6 @@ using (var serviceScope = ((IApplicationBuilder)app).ApplicationServices.CreateS
         };
 
         context.Expenses.Add(testExpense1);
-
-
         var testModel1 = new Model()
         {
             ModelId = 1,
@@ -55,9 +54,17 @@ using (var serviceScope = ((IApplicationBuilder)app).ApplicationServices.CreateS
             Email = "email@as.dk",
             PhoneNo = "123234",
             Expenses = new List<Expense>()
-            {testExpense1
+            {new Expense
+            {
+            amount = 123,
+            Date = DateTime.Now,
+            ExpenseId = 2,
+            JobId = 1,
+            ModelId = 1,
+            Text = "Mad"
+            }
             },
-            Jobs = new List<Job>(){},
+            Jobs = new List<Job>() { },
             FirstName = "Anne",
             LastName = "Doe",
             HairColor = "blond",
@@ -72,7 +79,7 @@ using (var serviceScope = ((IApplicationBuilder)app).ApplicationServices.CreateS
             Days = 4,
             Expenses = new List<Expense>()
             {
-testExpense1
+                testExpense1
             },
             JobId = 1,
             Location = "Oslo",
@@ -81,6 +88,14 @@ testExpense1
         };
 
         context.Jobs.Add(testJob1);
+
+
+        // Har bare gemt dette, fra tidligere test
+        //context.Expenses.Add(testExpense1);
+        //testModel1.Expenses.Add(testExpense1);
+        //testModel1.Jobs.Add(testJob1);
+        //testJob1.Models.Add(testModel1);
+        //testJob1.Expenses.Add(testExpense1);
 
 
 
@@ -98,6 +113,7 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 
+app.UseCors();
 app.UseAuthorization();
 app.MapHub<ExpenseLogHub>("/logExpenseHub");
 app.MapControllers();
