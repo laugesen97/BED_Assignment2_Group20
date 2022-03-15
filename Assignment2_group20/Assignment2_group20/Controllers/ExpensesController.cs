@@ -18,9 +18,9 @@ namespace Assignment2_group20.Controllers
     public class ExpensesController : ControllerBase
     {
         private readonly DataDb _context;
-        private readonly IHubContext<ExpenseLogHub> _hubContext;
+        private readonly IHubContext<ExpenseLogHub, IExpenseLogHub> _hubContext;
 
-        public ExpensesController(DataDb context, IHubContext<ExpenseLogHub> hubContext)
+        public ExpensesController(DataDb context, IHubContext<ExpenseLogHub, IExpenseLogHub> hubContext)
         {
             _hubContext=hubContext;
             _context = context;
@@ -83,12 +83,10 @@ namespace Assignment2_group20.Controllers
         [HttpPost]
         public async Task<ActionResult<Expense>> PostExpense(Expense expense)
         {
-
-
             _context.Expenses.Add(expense);
+
             await _context.SaveChangesAsync();
-            //_hubContext.Clients.All.SendCoreAsync("LogExpense", expense);
-            //_hubContext.Clients.All
+            await _hubContext.Clients.All.LogExpense(expense.ToString());
 
             return CreatedAtAction("GetExpense", new { id = expense.ExpenseId }, expense);
         }

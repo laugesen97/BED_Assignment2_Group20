@@ -14,7 +14,6 @@ builder.Services.AddSwaggerGen();
 
 //Add signalR
 builder.Services.AddSignalR();
-
 builder.Services.AddDbContext<DataDb>(opt => opt.UseInMemoryDatabase("TempDb"));
 
 var app = builder.Build();

@@ -12,5 +12,19 @@ namespace Assignment2_group20.Models
         public string? Text { get; set; }
         [Column(TypeName = "decimal(9,2)")]
         public decimal amount { get; set; }
+
+        public override string ToString()
+        {
+            string result = "";
+
+            result = $"ExpenseId: {ExpenseId}, \n" +
+                     $"ModelId: {ModelId}, \n" +
+                     $"JobId: {JobId}, \n" +
+                     $"Date: {Date}, \n" +
+                     $"Text: {Text}, \n" +
+                     $"Amount: {amount}, \n";
+
+            return result;
+        }
     }
 }

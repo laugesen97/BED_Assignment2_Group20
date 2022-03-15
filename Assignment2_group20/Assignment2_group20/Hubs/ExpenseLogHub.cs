@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Assignment2_group20.Hubs
 {
-    public class ExpenseLogHub : Hub
+    public class ExpenseLogHub : Hub<IExpenseLogHub>
     {
-        public async Task LogExpense(Expense expense)
+        public async Task LogExpense(string expense)
         {
-            await Clients.All.SendAsync("ReceiveMessage", expense);
+            await Clients.All.LogExpense(expense);
         }
+
     }
 }
