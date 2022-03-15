@@ -42,6 +42,31 @@ namespace Assignment2_group20.Controllers
 
             return job;
         }
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<Job>> UpdateJob(long id, DateTimeOffset StartDate, int Days, string? Location, string? Comments)
+        {
+            var job = await _context.Jobs.FindAsync(id);
+            if (StartDate != DateTimeOffset.MinValue)
+            {
+                job.StartDate = StartDate;
+            }
+            if (Days.ToString() != null)
+            {
+                job.Days = Days;
+            }
+            if (Location != null)
+            {
+                job.Location = Location;
+            }
+            if (Comments != null)
+            {
+                job.Comments = Comments;
+            }
+
+            _context.Jobs.Update(job);
+            return job;
+        }
+
 
         // PUT: api/Jobs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

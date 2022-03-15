@@ -19,8 +19,9 @@ namespace Assignment2_group20.Controllers
         private readonly DataDb _context;
         // Laver min mapper
         MapperConfiguration mapperConfig;
+        MapperConfiguration mapperConfigReverse;
         Mapper mapper;
-        
+        Mapper mapperReverse;
         public ModelsController(DataDb context)
         {
             _context = context;
@@ -30,7 +31,10 @@ namespace Assignment2_group20.Controllers
                 cfg.CreateMap<ModelNoJobsOrExpenses, Model>();
             });
             mapper = new Mapper(mapperConfig);
-
+            mapperConfigReverse = new MapperConfiguration(cfg => {
+                cfg.CreateMap<Model, ModelNoJobsOrExpenses>();
+            });
+            mapperReverse = new Mapper(mapperConfigReverse);
 
         }
 
@@ -38,7 +42,24 @@ namespace Assignment2_group20.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Model>>> GetModels()
         {
-            return await _context.Models.ToListAsync();
+            List<Model> models = new List<Model>();
+            foreach (var item in _context.Models)
+            {
+                item.Expenses = null;
+                item.Jobs = null;
+                models.Add(item);
+            }
+            return models;
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<Model>> UpdateModel(long id, ModelNoJobsOrExpenses patchModel)
+        {
+            var model = await _context.Models.FindAsync(id);
+            Model savedPatchModel = mapper.Map<Model>(patchModel);
+            model = savedPatchModel;
+            _context.Models.Update(model);
+            return model;
         }
 
         // GET: api/Models/5
