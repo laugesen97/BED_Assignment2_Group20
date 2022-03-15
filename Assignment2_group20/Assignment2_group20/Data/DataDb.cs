@@ -9,5 +9,6 @@ namespace Assignment2_group20.Data
         public DbSet<Expense> Expenses => Set<Expense>();
         public DbSet<Model> Models => Set<Model>();
         public DbSet<Job> Jobs => Set<Job>();
+
     }
 }
