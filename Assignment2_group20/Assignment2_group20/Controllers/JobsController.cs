@@ -29,11 +29,12 @@ namespace Assignment2_group20.Controllers
         }
 
         // GET: api/Jobs
-        // Henter alle modeller for de forskellige jobs
+        // Hente en liste med alle jobs. Skal inkludere navn på modeller, som er sat på de enkelte
+        // jobs, men ikke expenses
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Job>>> GetJobs()
         {
-            var jobs = _context.Jobs.Include(x => x.Models).ToList();
+            var jobs =  _context.Jobs.Include(x => x.Models).ToList();
             return jobs;
         }
 
@@ -46,12 +47,10 @@ namespace Assignment2_group20.Controllers
             var jobs = _context.Jobs.Where(x => x.JobId == jobid).Include(x => x.Expenses).FirstOrDefault();
             return jobs;
         }
+
         //GET: api/Jobs/modelsjobs/modelid
-        // Hente en liste med alle jobs. Skal inkludere navn på modeller, som er sat på de enkelte
-        // jobs, men ikke expenses.
-        
-        [HttpGet("Models{modelid:int}")]
         // Hente en liste med alle jobs for en angiven model – uden expenses.
+        [HttpGet("Models{modelid:int}")]
         public async Task<ActionResult<IEnumerable<Job>>> GetJobsForModel(long modelid)
         {
             List<Job> jobs = new List<Job>();
@@ -104,6 +103,7 @@ namespace Assignment2_group20.Controllers
                 job.Comments = Comments;
             }
 
+
             _context.Jobs.Update(job);
             return job;
         }
@@ -111,34 +111,34 @@ namespace Assignment2_group20.Controllers
 
         // PUT: api/Jobs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutJob(long id, Job job)
-        {
-            if (id != job.JobId)
-            {
-                return BadRequest();
-            }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutJob(long id, Job job)
+        //{
+        //    if (id != job.JobId)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            _context.Entry(job).State = EntityState.Modified;
+        //    _context.Entry(job).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!JobExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!JobExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         // POST: api/Jobs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

@@ -52,16 +52,80 @@ namespace Assignment2_group20.Controllers
             }
             return models;
         }
-
         [HttpPatch("{id}")]
-        public async Task<ActionResult<Model>> UpdateModel(long id, ModelNoJobsOrExpenses patchModel)
+        public async Task<ActionResult<Model>> UpdateModel(long id, string FirstName, string LastName, string Email, string? PhoneNo, string? AddresLine1, string? AddresLine2,
+            string? Zip, string? City, DateTime BirthDay, double Height, int ShoeSize, string? HairColor, string? Comments)
         {
             var model = await _context.Models.FindAsync(id);
-            Model savedPatchModel = mapper.Map<Model>(patchModel);
-            model = savedPatchModel;
+            if (FirstName != null)
+            {
+                model.FirstName = FirstName;
+            }
+            if (LastName != null)
+            {
+                model.LastName = LastName;
+            }
+            if (Email != null)
+            {
+                model.Email = Email;
+            }
+            if (PhoneNo != null)
+            {
+                model.PhoneNo = PhoneNo;
+            }
+            if (AddresLine1 != null)
+            { 
+                model.AddresLine1 = AddresLine1;
+            }
+            if (AddresLine2 != null)
+            {
+                model.AddresLine2 = AddresLine2;
+            }
+            if (Zip != null)
+            {
+                model.Zip = Zip;
+            }
+            if (City != null)
+            {
+                model.City = City;
+            }
+            if (City != null)
+            {
+                model.City = City;
+            }
+            if (BirthDay != DateTime.MinValue)
+            {
+                model.BirthDay = BirthDay;
+            }
+            if (Height.ToString() != null)
+            {
+                model.Height = Height;
+            }
+            if (ShoeSize.ToString() != null)
+            {
+                model.ShoeSize = ShoeSize;
+            }
+            if (HairColor != null)
+            {
+                model.HairColor = HairColor;
+            }
+            if (Comments != null)
+            {
+                model.Comments = Comments;
+            }
             _context.Models.Update(model);
             return model;
         }
+
+        //[HttpPatch("{id}")]
+        //public async Task<ActionResult<Model>> UpdateModel(long id, ModelNoJobsOrExpenses patchModel)
+        //{
+        //    var model = await _context.Models.FindAsync(id);
+        //    Model savedPatchModel = mapper.Map<Model>(patchModel);
+        //    model = savedPatchModel;
+        //    _context.Models.Update(model);
+        //    return model;
+        //}
 
         // GET: api/Models/5
         // Hente model med den angivne ModelId inklusiv modellens jobs og udgifter.
@@ -78,34 +142,34 @@ namespace Assignment2_group20.Controllers
 
         // PUT: api/Models/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutModel(long id, ModelNoJobsOrExpenses model)
-        {
-            if (id != model.ModelId)
-            {
-                return BadRequest();
-            }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutModel(long id, ModelNoJobsOrExpenses model)
+        //{
+        //    if (id != model.ModelId)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            _context.Entry(mapper.Map<Model>(model)).State = EntityState.Modified;
+        //    _context.Entry(mapper.Map<Model>(model)).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ModelExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!ModelExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         // POST: api/Models
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
