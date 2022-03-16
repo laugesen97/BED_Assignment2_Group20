@@ -80,6 +80,7 @@ namespace Assignment2_group20.Controllers
 
         // POST: api/Expenses
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // Oprette en ny expense. Bemærk at en expense både er tilknyttet en model og et job.
         [HttpPost]
         public async Task<ActionResult<Expense>> PostExpense(Expense expense)
         {

@@ -39,6 +39,7 @@ namespace Assignment2_group20.Controllers
         }
 
         // GET: api/Models
+        // Hente en liste med alle modeller – uden data for deres jobs eller udgifter.
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Model>>> GetModels()
         {
@@ -63,30 +64,29 @@ namespace Assignment2_group20.Controllers
         }
 
         // GET: api/Models/5
+        // Hente model med den angivne ModelId inklusiv modellens jobs og udgifter.
         [HttpGet("{id}")]
         public async Task<ActionResult<Model>> GetModel(long id)
         {
-            var model = await _context.Models.FindAsync(id);
-
+            var model =  _context.Models.Where(x => x.ModelId == id).Include(d => d.Expenses).Include(d => d.Jobs).FirstOrDefault();
             if (model == null)
             {
                 return NotFound();
             }
-
             return model;
         }
 
         // PUT: api/Models/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutModel(long id, Model model)
+        public async Task<IActionResult> PutModel(long id, ModelNoJobsOrExpenses model)
         {
             if (id != model.ModelId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(model).State = EntityState.Modified;
+            _context.Entry(mapper.Map<Model>(model)).State = EntityState.Modified;
 
             try
             {
@@ -109,6 +109,7 @@ namespace Assignment2_group20.Controllers
 
         // POST: api/Models
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // Opret ny model – kun grunddata – ikke jobs og udgifte
         [HttpPost]
         public async Task<ActionResult<Model>> PostModel(ModelNoJobsOrExpenses model)
         {
@@ -120,6 +121,7 @@ namespace Assignment2_group20.Controllers
         }
 
         // DELETE: api/Models/5
+        // Slette en model
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteModel(long id)
         {

@@ -2,13 +2,13 @@ using Assignment2_group20.Data;
 using Assignment2_group20.Hubs;
 using Assignment2_group20.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddCors();
-builder.Services.AddControllers();
 
 builder.Services.AddDbContext<DataDb>(opt => opt.UseInMemoryDatabase("TempDb"));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -17,7 +17,7 @@ builder.Services.AddSwaggerGen();
 
 //Add signalR
 builder.Services.AddSignalR();
-
+builder.Services.AddControllers().AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
 var app = builder.Build();
 
@@ -41,7 +41,7 @@ using (var serviceScope = ((IApplicationBuilder)app).ApplicationServices.CreateS
             ModelId = 1,
             Text = "Mad"
         };
-
+        string json = JsonConvert.SerializeObject(testExpense1);
         context.Expenses.Add(testExpense1);
         var testModel1 = new Model()
         {
@@ -89,6 +89,22 @@ using (var serviceScope = ((IApplicationBuilder)app).ApplicationServices.CreateS
 
         context.Jobs.Add(testJob1);
 
+        var testJob2 = new Job()
+        {
+            Comments = "none",
+            Customer = "Aldi",
+            Days = 12,
+            Expenses = new List<Expense>()
+            {
+                testExpense1
+            },
+            JobId = 2,
+            Location = "Herning",
+            Models = new List<Model>() { testModel1 },
+            StartDate = DateTimeOffset.Now
+        };
+
+        context.Jobs.Add(testJob2);
 
         // Har bare gemt dette, fra tidligere test
         //context.Expenses.Add(testExpense1);
