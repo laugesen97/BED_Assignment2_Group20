@@ -117,16 +117,7 @@ namespace Assignment2_group20.Controllers
             _context.Models.Update(model);
             return model;
         }
-
-        //[HttpPatch("{id}")]
-        //public async Task<ActionResult<Model>> UpdateModel(long id, ModelNoJobsOrExpenses patchModel)
-        //{
-        //    var model = await _context.Models.FindAsync(id);
-        //    Model savedPatchModel = mapper.Map<Model>(patchModel);
-        //    model = savedPatchModel;
-        //    _context.Models.Update(model);
-        //    return model;
-        //}
+        
 
         // GET: api/Models/5
         // Hente model med den angivne ModelId inklusiv modellens jobs og udgifter.
@@ -140,38 +131,7 @@ namespace Assignment2_group20.Controllers
             }
             return model;
         }
-
-        // PUT: api/Models/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutModel(long id, ModelNoJobsOrExpenses model)
-        //{
-        //    if (id != model.ModelId)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(mapper.Map<Model>(model)).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!ModelExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
+        
         // POST: api/Models
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         // Opret ny model – kun grunddata – ikke jobs og udgifter

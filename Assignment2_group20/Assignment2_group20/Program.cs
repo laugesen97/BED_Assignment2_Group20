@@ -105,16 +105,6 @@ using (var serviceScope = ((IApplicationBuilder)app).ApplicationServices.CreateS
         };
 
         context.Jobs.Add(testJob2);
-
-        // Har bare gemt dette, fra tidligere test
-        //context.Expenses.Add(testExpense1);
-        //testModel1.Expenses.Add(testExpense1);
-        //testModel1.Jobs.Add(testJob1);
-        //testJob1.Models.Add(testModel1);
-        //testJob1.Expenses.Add(testExpense1);
-
-
-
         context.SaveChanges();
     }
 }

@@ -69,19 +69,6 @@ namespace Assignment2_group20.Controllers
             return jobs;
         }
 
-        // GET: api/Jobs/5
-        //[HttpGet("{id:int}")]
-        //public async Task<ActionResult<Job>> GetJob(long id)
-        //{
-        //    var job = await _context.Jobs.FindAsync(id);
-
-        //    if (job == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return job;
-        //}
         [HttpPatch("{id}")]
         // Opdater et job
         public async Task<ActionResult<Job>> UpdateJob(long id, DateTimeOffset StartDate, int Days, string? Location, string? Comments)
@@ -110,37 +97,6 @@ namespace Assignment2_group20.Controllers
         }
 
 
-        // PUT: api/Jobs/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutJob(long id, Job job)
-        //{
-        //    if (id != job.JobId)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(job).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!JobExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
         // POST: api/Jobs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         // Opret nyt job
@@ -157,7 +113,7 @@ namespace Assignment2_group20.Controllers
         // Tilføj model til job. Bemærk at der godt kan være flere modeller på samme job.
         public async Task<ActionResult<Job>> PostModelToJob(long jobid, ModelNoJobsOrExpenses model)
         {
-            // TODO
+            // Kan ikke indsætte ID for model ved post. Er indent.
             var contextjob = _context.Jobs.Where(x => x.JobId == jobid).Include(x => x.Models).Include(x => x.Expenses).FirstOrDefault();
             contextjob.Models.Add(mapper.Map<Model>(model));
 
@@ -177,7 +133,7 @@ namespace Assignment2_group20.Controllers
                 }
             }
 
-            return CreatedAtAction("GetJob", new { id = contextjob.JobId }, contextjob);
+            return contextjob;
         }
 
         // DELETE: api/Job
