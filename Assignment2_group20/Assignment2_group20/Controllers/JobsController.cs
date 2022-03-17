@@ -53,7 +53,6 @@ namespace Assignment2_group20.Controllers
         [HttpGet("Models{modelid:int}")]
         public async Task<ActionResult<IEnumerable<Job>>> GetJobsForModel(long modelid)
         {
-            //TODO
             List<Job> jobs = new List<Job>();
             var contextjob = _context.Jobs.Include(x => x.Models).ToList();
             foreach (var jobse in contextjob)
@@ -153,14 +152,15 @@ namespace Assignment2_group20.Controllers
 
             return CreatedAtAction("GetJob", new { id = job.JobId }, job);
         }
-        [HttpPost("{modelid}")]
+       
+        [HttpPost ("PostModel")]
         // Tilføj model til job. Bemærk at der godt kan være flere modeller på samme job.
         public async Task<ActionResult<Job>> PostModelToJob(long jobid, ModelNoJobsOrExpenses model)
         {
             // TODO
             var contextjob = _context.Jobs.Where(x => x.JobId == jobid).Include(x => x.Models).Include(x => x.Expenses).FirstOrDefault();
             contextjob.Models.Add(mapper.Map<Model>(model));
-            _context.Entry(contextjob).State = EntityState.Modified;
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -177,7 +177,7 @@ namespace Assignment2_group20.Controllers
                 }
             }
 
-            return CreatedAtAction("AddedModel", contextjob, model);
+            return CreatedAtAction("GetJob", new { id = contextjob.JobId }, contextjob);
         }
 
         // DELETE: api/Job
