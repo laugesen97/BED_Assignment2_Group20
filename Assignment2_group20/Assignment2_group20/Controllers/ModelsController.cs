@@ -53,6 +53,7 @@ namespace Assignment2_group20.Controllers
             return models;
         }
         [HttpPatch("{id}")]
+        // Opdater en model - kun grunddata, ikke jobs og udgifter
         public async Task<ActionResult<Model>> UpdateModel(long id, string FirstName, string LastName, string Email, string? PhoneNo, string? AddresLine1, string? AddresLine2,
             string? Zip, string? City, DateTime BirthDay, double Height, int ShoeSize, string? HairColor, string? Comments)
         {
@@ -173,7 +174,7 @@ namespace Assignment2_group20.Controllers
 
         // POST: api/Models
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        // Opret ny model – kun grunddata – ikke jobs og udgifte
+        // Opret ny model – kun grunddata – ikke jobs og udgifter
         [HttpPost]
         public async Task<ActionResult<Model>> PostModel(ModelNoJobsOrExpenses model)
         {
